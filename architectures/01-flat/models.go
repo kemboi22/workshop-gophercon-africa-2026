@@ -13,6 +13,7 @@ type (
 		Latitude       float64 `json:"decimalLatitude"`  // -1.4061
 		Longitude      float64 `json:"decimalLongitude"` // 35.0083
 		EventDate      string  `json:"eventDate"`        // "2016-01-11", and not a time.Time
+
 	}
 	// Species is GBIF's taxonomy record.
 	Species struct {
