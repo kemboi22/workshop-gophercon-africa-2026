@@ -29,83 +29,15 @@ func Lightbox() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"lightbox\" class=\"lightbox\" aria-labelledby=\"lightbox-name\"><form method=\"dialog\"><button class=\"lightbox__close\" aria-label=\"Close\">×</button></form><div class=\"lightbox__panel\"><div class=\"lightbox__stage\"><img class=\"lightbox__image\" alt=\"\"><canvas class=\"lightbox__pixels\" aria-hidden=\"true\"></canvas><div class=\"lightbox__nophoto\" hidden><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"120\" height=\"120\"><p>No photo of this one yet</p></div><div class=\"dots lightbox__dots\" aria-hidden=\"true\"><span></span><span></span><span></span></div></div><div class=\"lightbox__info\"><p class=\"lightbox__number\"></p><h2 id=\"lightbox-name\" class=\"lightbox__name\"></h2><p class=\"lightbox__latin\"></p><div class=\"lightbox__facts\"></div><p class=\"lightbox__credit\" hidden></p><a class=\"button lightbox__ref\" target=\"_blank\" rel=\"noopener\" hidden>See the record ↗</a><div class=\"lightbox__nav\"><button type=\"button\" data-step=\"-1\" aria-label=\"Previous critter\">←</button> <button type=\"button\" data-step=\"1\" aria-label=\"Next critter\">→</button></div></div></div></dialog>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"lightbox\" class=\"lightbox\" aria-labelledby=\"lightbox-name\"><form method=\"dialog\"><button class=\"lightbox__close\" aria-label=\"Close\">×</button></form><div class=\"lightbox__panel\"><div class=\"lightbox__stage\"><img class=\"lightbox__image\" alt=\"\"><canvas class=\"lightbox__pixels\" aria-hidden=\"true\"></canvas><div class=\"lightbox__nophoto\" hidden><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"120\" height=\"120\"><p>No photo of this one yet</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		return nil
-	})
-}
-
-func Loader() templ.Component {
-	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
-			return templ_7745c5c3_CtxErr
-		}
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-		if !templ_7745c5c3_IsBuffer {
-			defer func() {
-				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err == nil {
-					templ_7745c5c3_Err = templ_7745c5c3_BufErr
-				}
-			}()
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"loader\" aria-hidden=\"true\"><div class=\"loader__fox\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"96\" height=\"96\"></div><p class=\"loader__text\">Finding critters</p><div class=\"dots\"><span></span><span></span><span></span></div></div>")
+		templ_7745c5c3_Err = RunningFox("lightbox__runner").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		return nil
-	})
-}
-
-func Star(class string) templ.Component {
-	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
-			return templ_7745c5c3_CtxErr
-		}
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-		if !templ_7745c5c3_IsBuffer {
-			defer func() {
-				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err == nil {
-					templ_7745c5c3_Err = templ_7745c5c3_BufErr
-				}
-			}()
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var3 == nil {
-			templ_7745c5c3_Var3 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var4 = []any{"star", class}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<svg class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(templ.CSSClasses(templ_7745c5c3_Var4).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/components/lightbox.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" viewBox=\"0 0 100 100\" aria-hidden=\"true\"><path d=\"M50 2 L56.5 34.3 L83.9 16.1 L65.7 43.5 L98 50 L65.7 56.5 L83.9 83.9 L56.5 65.7 L50 98 L43.5 65.7 L16.1 83.9 L34.3 56.5 L2 50 L34.3 43.5 L16.1 16.1 L43.5 34.3 Z\"></path></svg>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div class=\"lightbox__info\"><p class=\"lightbox__number\"></p><div class=\"lightbox__tags\"></div><h2 id=\"lightbox-name\" class=\"lightbox__name\"></h2><p class=\"lightbox__latin\"></p><div class=\"lightbox__facts\"></div><p class=\"lightbox__credit\" hidden></p><a class=\"button lightbox__ref\" target=\"_blank\" rel=\"noopener\" hidden>See the record ↗</a><div class=\"lightbox__nav\"><button type=\"button\" data-step=\"-1\" aria-label=\"Previous critter\">←</button> <button type=\"button\" data-step=\"1\" aria-label=\"Next critter\">→</button></div></div></div></dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

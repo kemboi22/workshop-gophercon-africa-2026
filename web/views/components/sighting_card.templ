@@ -1,10 +1,14 @@
 package components
 
-import "workshop/internal/domain/sighting"
+import (
+	"strconv"
+	"workshop/internal/domain/sighting"
+)
 
 templ SightingCard(s sighting.Sighting) {
 	<article
 		class="card"
+		data-key={ strconv.FormatInt(s.GBIFKey, 10) }
 		if s.ReferenceURL != "" {
 			data-ref={ s.ReferenceURL }
 		}
@@ -23,6 +27,8 @@ templ SightingCard(s sighting.Sighting) {
 			if s.IndividualCount != nil && *s.IndividualCount > 1 {
 				<span class="card__badge">×{ *s.IndividualCount }</span>
 			}
+			<button class="card__heart" type="button" aria-pressed="false" aria-label={ "Collect the " + displayName(s.Species) + " sticker" }>♥</button>
+			@Tags(s)
 		</div>
 		<div class="card__body">
 			<h3 class="card__name">{ displayName(s.Species) }</h3>
@@ -32,7 +38,7 @@ templ SightingCard(s sighting.Sighting) {
 			<ul class="card__meta">
 				<li>
 					@icon("#i-pin")
-					<span><span class="visually-hidden">Where: </span>{ place(s.Location) }</span>
+					<span><span class="visually-hidden">Where: </span>{ localPlace(s.Location) }</span>
 				</li>
 				<li>
 					@icon("#i-date")
@@ -50,6 +56,22 @@ templ SightingCard(s sighting.Sighting) {
 			</ul>
 		</div>
 	</article>
+}
+
+templ Tags(s sighting.Sighting) {
+	<div class="tags">
+		if k := Kind(s); k != "" {
+			<span class={ "tag", kindClass(k) }>{ k }</span>
+		}
+		if s.Location.Country != "" {
+			<span class="tag tag--country">
+				if f := flagURL(s.Location.CountryCode); f != "" {
+					<img class="flag" src={ f } alt="" width="20" height="15" loading="lazy"/>
+				}
+				{ s.Location.Country }
+			</span>
+		}
+	</div>
 }
 
 templ icon(id string) {

@@ -4,6 +4,8 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"slices"
+	"time"
 	"workshop/internal/domain/sighting"
 	"workshop/web/views/pages"
 )
@@ -29,9 +31,21 @@ func Home(logger *slog.Logger, sightings SightingsLister) http.HandlerFunc {
 		if err = pages.Home(pages.HomeProps{
 			Sightings: items,
 			Summary:   sighting.Summarise(items),
+			Featured:  critterOfTheDay(items, time.Now()),
 		}).Render(ctx, w); err != nil {
 			logger.ErrorContext(ctx, "handlers: rendering sightings: "+err.Error())
 			renderError(ctx, w, logger, http.StatusInternalServerError, "Unable to render page.")
 		}
 	}
+}
+
+// critterOfTheDay picks one sighting with a photo, the same one all day.
+func critterOfTheDay(items []sighting.Sighting, now time.Time) *sighting.Sighting {
+	withPhoto := slices.DeleteFunc(slices.Clone(items), func(s sighting.Sighting) bool {
+		return !slices.ContainsFunc(s.Media, func(m sighting.Media) bool { return m.Type == "StillImage" })
+	})
+	if len(withPhoto) == 0 {
+		return nil
+	}
+	return &withPhoto[(now.YearDay()*7919)%len(withPhoto)]
 }

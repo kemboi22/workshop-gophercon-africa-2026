@@ -50,6 +50,13 @@
 			if (!frame) frame = requestAnimationFrame(apply);
 		}
 
+		// The fox runs while they type, and a moment after.
+		let sniff = 0;
+		form.addEventListener('input', function () {
+			form.classList.add('is-searching');
+			clearTimeout(sniff);
+			sniff = setTimeout(function () { form.classList.remove('is-searching'); }, 700);
+		});
 		form.addEventListener('input', schedule);
 		// The fields clear after this event fires, so the pass waits for the frame.
 		form.addEventListener('reset', schedule);

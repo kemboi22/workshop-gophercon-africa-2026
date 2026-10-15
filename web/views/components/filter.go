@@ -24,8 +24,20 @@ func FilterAttrs(s sighting.Sighting) templ.Attributes {
 	return templ.Attributes{
 		"data-animal":  Animal(s),
 		"data-country": Country(s),
+		"data-kind":    Kind(s),
 		"data-search": strings.ToLower(strings.Join([]string{
-			Animal(s), latinName(s.Species), place(s.Location), s.RecordedBy,
+			Animal(s), latinName(s.Species), Kind(s), place(s.Location), s.RecordedBy,
 		}, " ")),
 	}
+}
+
+// CountryFlags maps each country's name to its flag, for the country chips.
+func CountryFlags(sightings []sighting.Sighting) map[string]string {
+	flags := make(map[string]string)
+	for _, s := range sightings {
+		if _, ok := flags[s.Location.Country]; !ok && s.Location.Country != "" {
+			flags[s.Location.Country] = flagURL(s.Location.CountryCode)
+		}
+	}
+	return flags
 }

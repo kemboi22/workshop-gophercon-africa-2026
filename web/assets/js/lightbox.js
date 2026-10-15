@@ -93,6 +93,8 @@
 		$('.lightbox__number').textContent = 'Critter ' + (cards.indexOf(card) + 1) + ' of ' + cards.length;
 		$('.lightbox__name').textContent = text(card, '.card__name');
 		$('.lightbox__latin').textContent = text(card, '.card__scientific');
+		const tags = card.querySelector('.tags');
+		$('.lightbox__tags').replaceChildren(tags ? tags.cloneNode(true) : '');
 		const facts = $('.lightbox__facts');
 		facts.replaceChildren(card.querySelector('.card__meta').cloneNode(true));
 		const badge = card.querySelector('.card__badge');
@@ -124,10 +126,12 @@
 			stage.style.setProperty('--ratio', '1');
 		}
 
-		if (!dialog.open) dialog.showModal();
+		const opening = !dialog.open;
+		if (opening) dialog.showModal();
 		dialog.classList.remove('is-switching');
 		void dialog.offsetWidth;
 		dialog.classList.add('is-switching');
+		if (opening && window.burst) window.burst(dialog, dialog.clientWidth / 2, dialog.clientHeight / 2, 16);
 	}
 
 	function step(by) {
@@ -139,11 +143,20 @@
 
 	list.addEventListener('click', function (e) {
 		const card = e.target.closest('.card');
-		if (!card) return;
+		// The heart collects a sticker instead: stickers.js has it.
+		if (!card || e.target.closest('.card__heart')) return;
 		// Let new-tab clicks through to the photo.
 		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 		e.preventDefault();
 		open(card);
+	});
+
+	// "Meet this critter" opens the matching card in the list.
+	document.querySelectorAll('[data-open]').forEach(function (button) {
+		button.addEventListener('click', function () {
+			const card = list.querySelector('.card[data-key="' + CSS.escape(button.dataset.open) + '"]');
+			if (card) open(card);
+		});
 	});
 
 	dialog.querySelectorAll('[data-step]').forEach(function (button) {

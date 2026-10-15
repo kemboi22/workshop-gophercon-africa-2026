@@ -13,6 +13,7 @@ type FilterGroup struct {
 	Key     string
 	Label   string
 	Options []sighting.Tally
+	Flags   map[string]string
 }
 
 templ Filter(props FilterProps) {
@@ -32,8 +33,13 @@ templ Filter(props FilterProps) {
 				<legend class="visually-hidden">{ g.Label }</legend>
 				<div class="filter__chips">
 					for _, o := range g.Options {
-						<label class="chip">
+						<label
+							class={ "chip", templ.KV(kindClass(o.Name), g.Key == "kind") }
+						>
 							<input type="checkbox" name={ g.Key } value={ o.Name }/>
+							if f := g.Flags[o.Name]; f != "" {
+								<img class="flag" src={ f } alt="" width="20" height="15" loading="lazy"/>
+							}
 							{ o.Name } <small>{ o.Count }</small>
 						</label>
 					}
@@ -41,6 +47,10 @@ templ Filter(props FilterProps) {
 			</fieldset>
 		}
 		<p class="filter__status">
+			<span class="filter__sniff">
+				@RunningFox("runner--small")
+				<span>Sniffing…</span>
+			</span>
 			<output class="filter__count" aria-live="polite"></output>
 			<button type="reset">Clear all</button>
 		</p>

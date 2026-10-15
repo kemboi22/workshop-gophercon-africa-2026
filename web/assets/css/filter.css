@@ -166,6 +166,22 @@
 	font-weight: 700;
 }
 
+/* The fox runs beside the count while they type. */
+.filter__sniff {
+	display: none;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: 0.85rem;
+}
+
+.filter.is-searching .filter__sniff {
+	display: inline-flex;
+}
+
+.filter.is-searching .filter__count {
+	display: none;
+}
+
 .filter__count:empty {
 	display: none;
 }

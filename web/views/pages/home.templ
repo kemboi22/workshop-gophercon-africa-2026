@@ -10,6 +10,7 @@ import (
 type HomeProps struct {
 	Sightings []sighting.Sighting
 	Summary   sighting.Summary
+	Featured  *sighting.Sighting
 }
 
 templ Home(props HomeProps) {
@@ -38,15 +39,22 @@ templ Home(props HomeProps) {
 						Empty:  "no-matches",
 						Search: true,
 						Groups: []components.FilterGroup{
+							{Key: "kind", Label: "Kinds of animal", Options: components.FilterOptions(props.Sightings, 0, components.Kind)},
 							{Key: "animal", Label: "Animals", Options: components.FilterOptions(props.Sightings, 12, components.Animal)},
-							{Key: "country", Label: "Countries", Options: components.FilterOptions(props.Sightings, 12, components.Country)},
+							{Key: "country", Label: "Countries", Options: components.FilterOptions(props.Sightings, 16, components.Country), Flags: components.CountryFlags(props.Sightings)},
 						},
 					})
 				</div>
 			}
 		</section>
+		if props.Featured != nil {
+			@components.Spotlight(*props.Featured)
+		}
 		<section class="critters" aria-labelledby="critters-title">
-			<h2 id="critters-title" class="section-title">Latest critters</h2>
+			<div class="critters__head">
+				<h2 id="critters-title" class="section-title">Latest critters</h2>
+				@components.Mascot()
+			</div>
 			if len(props.Sightings) == 0 {
 				<div class="empty">
 					<img src="/assets/images/logo.svg" alt="" width="80" height="80"/>

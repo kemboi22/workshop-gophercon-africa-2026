@@ -43,29 +43,42 @@ tiles' backdrop while photos load. Text on matcha or sun is always `--ink`.
 
 ## Components
 
-- **Loader**: full-screen matcha glow in one colour family, the fox hopping with a
-  squash-and-stretch and a shadow over soft pale-green ripples, "Finding critters" and three
-  pale-green bouncing dots. Shrinks away as a circle once the page is in. Only
-  with JS (`html.js`), and it lifts itself after 6s regardless.
+- **Running fox** (`RunningFox` in `components/fox.templ`): a side-view SVG fox, legs swinging in
+  pairs, body bobbing, tail wagging, head nodding, a dashed ground sliding past. Used big on the
+  loader, small beside the search box while typing ("Sniffing…"), and in the lightbox while a
+  large photo loads. Still under reduced motion.
+- **Loader**: full-screen matcha glow in one colour family, the running fox and "Fetching
+  critters..." with hopping dots. Shrinks away as a circle once the page is in. Only with JS
+  (`html.js`), and it lifts itself after 6s regardless.
 - **Header**: sticky, milk with blur, bottom outline. Fox logo + "Kawaii Critters", nav as pills
-  (Search, Critters, About) that turn sun-yellow on hover. The name hides under 440px.
+  (Search, Critters, About) that turn sun-yellow on hover, and a "♥ My stickers n" pill that shows
+  only collected cards (label hidden on phones). The name hides under 440px.
 - **Hero**: short and centred. Matcha sky with two spinning yellow stars at the sides, a tilted
   yellow "Hello" pill, a one-line Fredoka title and white stat pills; a small scalloped cloud edge
   (48px scallops); then on pale matcha the search box with the count and "Clear all" beside it,
   and one sideways-scrolling row of chips each for animals and countries (labels for screen
   readers only), fading at the edges.
 - **Search**: big white pill with a magnifier, hard shadow that turns matcha on focus.
-- **Chips**: white pills, ticked = sun-yellow with a ♥. Always one sideways-scrolling row.
+- **Chips**: white pills, ticked = sun-yellow with a ♥. Always one sideways-scrolling row. Rows:
+  kinds of animal (coloured like the kind tags), the 12 top animals, the 16 top countries with flags.
+- **Critter of the day** (`Spotlight`): a big outlined card under the banner, photo left with a
+  spinning star, then a wiggling yellow ribbon, the name, tags, one sentence (`story`) and a
+  "Meet this critter →" button that opens it in the lightbox. Picked in `handlers/home.go`.
+- **Mascot**: the fox beside "Latest critters", peeking, with a speech bubble whose tip changes
+  every 6s.
 - **Grid**: 1 column, 2 from 520px, 3 from 820px, 4 from 1100px. Page up to 96rem wide.
 - **Sighting card**: compact white sticker, whole card clickable. Square photo slot filled edge to
   edge (image absolutely positioned, `object-fit: cover`), backdrop cycling the four tile
   gradients with a white shimmer sweeping across until the photo loads. The photo is drawn as
   40-across pixel art (`pixel.js`); pointing at the card steps the pixels away to the real photo,
-  zooms it slightly and tilts the card 1°. Count badge (sun) top-right. Body: name, Latin name
+  zooms it slightly and tilts the card 1°. Count badge (sun) top-left; a round ♥ sticker button top-right (pink
+  when collected, saved in localStorage, bursts stars). Tags along the photo's bottom: the kind
+  (Mammal sun-pale, Bird sky-soft, Reptile matcha-soft, Shark lilac) and the country with its flag
+  from flagcdn.com. Body: name, Latin name
   without author, place, date and observer, each one line with an ellipsis. Cards pop in on load.
 - **Lightbox**: any card. White outlined panel with a matcha hard shadow, popping in with a bounce
   over a blurred forest-green backdrop. Photo on the left (pixels shimmering, then sharpening in five
-  steps once the large photo arrives); on the right a "Critter n of m" pill, the name, Latin
+  steps once the large photo arrives); stars burst out as it opens; on the right a "Critter n of m" pill, the tags, the name, Latin
   name, the card's facts, a count pill, the photo credit, a "See the record" button and ← →
   buttons (arrow keys too) that step through the cards still showing. Stacks on phones.
 - **Empty states**: dashed outline box with the fox.
@@ -73,7 +86,9 @@ tiles' backdrop while photos load. Text on matcha or sun is always `--ink`.
 
 ## Rules
 
-- Respect `prefers-reduced-motion`: no hops, spins, tilts, pop-ins or pixel steps.
+- Respect `prefers-reduced-motion`: no running, spins, tilts, pop-ins, bursts or pixel steps.
+- For kids: big friendly words, things to collect and press, but never more than one moving
+  thing competing in one spot.
 - No emoji as icons; draw SVGs.
 - Gradients stay soft two-stop washes.
 - The home page shows the latest 2,000 sightings (`Limit` in `web/handlers/home.go`): all of

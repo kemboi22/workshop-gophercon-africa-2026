@@ -1,0 +1,49 @@
+package components
+
+templ RunningFox(class string) {
+	<span class={ "runner", class } aria-hidden="true">
+		<svg class="runner__fox" viewBox="0 0 120 80">
+			<g stroke="#1A1036" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+				<rect class="runner__leg runner__leg--back-far" x="36" y="46" width="8" height="20" rx="4" fill="#C96A22"></rect>
+				<rect class="runner__leg runner__leg--front-far" x="68" y="46" width="8" height="20" rx="4" fill="#C96A22"></rect>
+				<g class="runner__tail">
+					<path d="M36 40 C16 46 2 32 5 12 C14 24 26 28 38 33 Z" fill="#F28C38"></path>
+					<path d="M5 12 C4 19 6 25 11 30 C12 23 10 17 5 12 Z" fill="#FFF8EE"></path>
+				</g>
+				<ellipse cx="56" cy="42" rx="24" ry="13" fill="#F28C38"></ellipse>
+				<ellipse cx="60" cy="49" rx="13" ry="4.5" fill="#FFF8EE" stroke-width="0"></ellipse>
+				<rect class="runner__leg runner__leg--back" x="40" y="46" width="8" height="20" rx="4" fill="#F28C38"></rect>
+				<rect class="runner__leg runner__leg--front" x="72" y="46" width="8" height="20" rx="4" fill="#F28C38"></rect>
+				<g class="runner__head">
+					<path d="M75 22 L78 6 L88 19 Z" fill="#F28C38"></path>
+					<circle cx="85" cy="31" r="13" fill="#F28C38"></circle>
+					<path d="M92 27 Q104 31 109 36 Q103 42 91 41 Z" fill="#FFF8EE"></path>
+					<circle cx="108" cy="36" r="2.6" fill="#1A1036" stroke-width="0"></circle>
+					<path d="M84 30 Q87 26.5 90 30" fill="none" stroke-width="2.6"></path>
+					<ellipse cx="83" cy="37" rx="3.5" ry="2" fill="#FF8FB1" stroke-width="0" opacity="0.8"></ellipse>
+				</g>
+			</g>
+		</svg>
+		<span class="runner__ground"></span>
+	</span>
+}
+
+templ Loader() {
+	<div class="loader" aria-hidden="true">
+		@RunningFox("runner--big")
+		<p class="loader__text">Fetching critters<span class="loader__dots"><span>.</span><span>.</span><span>.</span></span></p>
+	</div>
+}
+
+templ Star(class string) {
+	<svg class={ "star", class } viewBox="0 0 100 100" aria-hidden="true">
+		<path d="M50 2 L56.5 34.3 L83.9 16.1 L65.7 43.5 L98 50 L65.7 56.5 L83.9 83.9 L56.5 65.7 L50 98 L43.5 65.7 L16.1 83.9 L34.3 56.5 L2 50 L34.3 43.5 L16.1 16.1 L43.5 34.3 Z"></path>
+	</svg>
+}
+
+templ Mascot() {
+	<div class="mascot">
+		<img class="mascot__fox" src="/assets/images/logo.svg" alt="" width="56" height="56"/>
+		<p class="mascot__bubble" data-tips>Psst! Tap any card to meet the critter up close.</p>
+	</div>
+}

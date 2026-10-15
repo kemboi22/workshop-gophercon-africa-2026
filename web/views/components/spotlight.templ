@@ -1,0 +1,24 @@
+package components
+
+import (
+	"strconv"
+	"workshop/internal/domain/sighting"
+)
+
+templ Spotlight(s sighting.Sighting) {
+	<section class="spotlight" aria-labelledby="spotlight-title">
+		<div class="spotlight__photo">
+			if m, ok := cover(s.Media); ok {
+				<img src={ photo(m.URL, "medium") } alt={ altText(s, m) } loading="lazy" decoding="async"/>
+			}
+			@Star("spotlight__star")
+		</div>
+		<div class="spotlight__body">
+			<p class="spotlight__ribbon">★ Critter of the day ★</p>
+			<h2 id="spotlight-title" class="spotlight__name">{ displayName(s.Species) }</h2>
+			@Tags(s)
+			<p class="spotlight__story">{ story(s) }</p>
+			<button class="button spotlight__open" type="button" data-open={ strconv.FormatInt(s.GBIFKey, 10) }>Meet this critter →</button>
+		</div>
+	</section>
+}

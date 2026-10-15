@@ -80,7 +80,7 @@ func Base(props BaseProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<a class=\"skip\" href=\"#sightings\">Skip to the critters</a><header class=\"site-header\"><div class=\"site-header__inner\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"44\" height=\"44\"> <span class=\"logo__name\">Kawaii Critters</span></a><nav class=\"nav\" aria-label=\"Main\"><a href=\"/#search\">Search</a> <a href=\"/#sightings\">Critters</a> <a href=\"/#about\">About</a></nav></div></header><main class=\"container\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<a class=\"skip\" href=\"#sightings\">Skip to the critters</a><header class=\"site-header\"><div class=\"site-header__inner\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"44\" height=\"44\"> <span class=\"logo__name\">Kawaii Critters</span></a><nav class=\"nav\" aria-label=\"Main\"><a href=\"/#search\">Search</a> <a href=\"/#sightings\">Critters</a> <a href=\"/#about\">About</a> <button class=\"stickers\" type=\"button\" aria-pressed=\"false\" data-stickers hidden><span aria-hidden=\"true\">♥</span> <span class=\"stickers__label\">My stickers</span> <span class=\"stickers__count\" data-sticker-count>0</span></button></nav></div></header><main class=\"container\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -96,7 +96,7 @@ func Base(props BaseProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<script src=\"/assets/js/filter.js\" defer></script><script src=\"/assets/js/pixel.js\" defer></script><script src=\"/assets/js/lightbox.js\" defer></script><script src=\"/assets/js/app.js\" defer></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<script src=\"/assets/js/filter.js\" defer></script><script src=\"/assets/js/pixel.js\" defer></script><script src=\"/assets/js/lightbox.js\" defer></script><script src=\"/assets/js/app.js\" defer></script><script src=\"/assets/js/stickers.js\" defer></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

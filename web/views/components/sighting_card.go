@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"workshop/internal/domain/sighting"
+	"workshop/internal/domain/sighting/country"
 	"workshop/internal/domain/species"
 )
 
@@ -57,4 +58,46 @@ func latinName(sp species.Species) string {
 // altText describes a photo, falling back to the animal's name.
 func altText(s sighting.Sighting, m sighting.Media) string {
 	return cmp.Or(m.Title, m.Description, "A "+displayName(s.Species))
+}
+
+// flagURL is a small picture of the country's flag, or "" if the code isn't two letters.
+func flagURL(code country.Code) string {
+	c := strings.ToLower(code.String())
+	if len(c) != 2 || c[0] < 'a' || c[0] > 'z' || c[1] < 'a' || c[1] > 'z' {
+		return ""
+	}
+	return "https://flagcdn.com/w40/" + c + ".png"
+}
+
+// Kind is the kind of animal in words a child knows, from its taxonomic class.
+func Kind(s sighting.Sighting) string {
+	switch s.Species.Class {
+	case "Mammalia":
+		return "Mammal"
+	case "Aves":
+		return "Bird"
+	case "Crocodylia", "Squamata", "Testudines", "Reptilia":
+		return "Reptile"
+	case "Elasmobranchii", "Chondrichthyes":
+		return "Shark"
+	case "Actinopterygii":
+		return "Fish"
+	case "Amphibia":
+		return "Amphibian"
+	}
+	return ""
+}
+
+// kindClass is the CSS modifier that colours a kind's tag.
+func kindClass(kind string) string {
+	return "kind--" + strings.ToLower(kind)
+}
+
+// localPlace is the place without its country, which the card shows by its flag instead.
+func localPlace(l sighting.Location) string {
+	parts := slices.DeleteFunc(
+		[]string{l.Locality, l.StateProvince},
+		func(s string) bool { return s == "" },
+	)
+	return cmp.Or(strings.Join(parts, ", "), l.Country, "Location unknown")
 }

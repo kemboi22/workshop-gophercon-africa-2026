@@ -159,57 +159,99 @@ h3 {
 	to { visibility: hidden; }
 }
 
-/* Soft rings ripple out from behind the fox. */
-.loader__fox::before {
-	content: "";
-	position: absolute;
-	inset: -2.5rem;
-	z-index: -1;
-	border-radius: 50%;
-	background: var(--matcha-soft);
-	opacity: 0.35;
-	animation: ripple 1.6s ease-out infinite;
-}
-
-@keyframes ripple {
-	from { transform: scale(0.6); opacity: 0.5; }
-	to { transform: scale(1.6); opacity: 0; }
-}
-
-.loader__fox {
-	position: relative;
-	isolation: isolate;
-	animation: hop 700ms cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
-}
-
-.loader__fox::after {
-	content: "";
-	position: absolute;
-	left: 50%;
-	bottom: -1.75rem;
-	width: 4rem;
-	height: 0.6rem;
-	border-radius: 50%;
-	background: var(--ink);
-	opacity: 0.25;
-	transform: translateX(-50%);
-	animation: hop-shadow 700ms cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
-}
-
-@keyframes hop {
-	from { transform: translateY(0) scale(1.08, 0.92); }
-	to { transform: translateY(-2.5rem) scale(0.96, 1.04); }
-}
-
-@keyframes hop-shadow {
-	from { transform: translateX(-50%) scale(1); }
-	to { transform: translateX(-50%) scale(0.6); opacity: 0.12; }
-}
-
 .loader__text {
-	margin: var(--space-8) 0 0;
+	margin: var(--space-4) 0 0;
 	font: 700 1.4rem var(--font-display);
 	letter-spacing: 0.01em;
+}
+
+.loader__dots span {
+	display: inline-block;
+	animation: dot 900ms ease-in-out infinite;
+}
+
+.loader__dots span:nth-child(2) { animation-delay: 150ms; }
+.loader__dots span:nth-child(3) { animation-delay: 300ms; }
+
+/* The running fox: legs swing in pairs, the body bobs, the tail wags, the ground slides by. */
+
+.runner {
+	position: relative;
+	display: inline-block;
+	width: 7rem;
+	padding-bottom: 0.5rem;
+}
+
+.runner--big { width: clamp(9rem, 30vw, 13rem); }
+.runner--small { width: 3rem; padding-bottom: 0.25rem; }
+
+.runner__fox {
+	display: block;
+	width: 100%;
+	overflow: visible;
+	animation: bob 280ms ease-in-out infinite alternate;
+}
+
+.runner__leg {
+	transform-box: fill-box;
+	transform-origin: 50% 10%;
+	animation: stride 280ms ease-in-out infinite alternate;
+}
+
+.runner__leg--back-far,
+.runner__leg--front { animation-direction: alternate-reverse; }
+
+.runner__tail {
+	transform-box: fill-box;
+	transform-origin: 100% 80%;
+	animation: wag 280ms ease-in-out infinite alternate;
+}
+
+.runner__head {
+	transform-box: fill-box;
+	transform-origin: 30% 80%;
+	animation: nod 280ms ease-in-out infinite alternate;
+}
+
+.runner__ground {
+	position: absolute;
+	right: 5%;
+	bottom: 0;
+	left: 5%;
+	height: 3px;
+	border-radius: 3px;
+	background: repeating-linear-gradient(90deg, var(--ink) 0 14px, transparent 14px 26px);
+	opacity: 0.6;
+	animation: ground 420ms linear infinite;
+}
+
+.runner--small .runner__ground {
+	height: 2px;
+	background-size: 13px 2px;
+}
+
+@keyframes bob {
+	from { transform: translateY(0); }
+	to { transform: translateY(-5%); }
+}
+
+@keyframes stride {
+	from { transform: rotate(-38deg); }
+	to { transform: rotate(38deg); }
+}
+
+@keyframes wag {
+	from { transform: rotate(-8deg); }
+	to { transform: rotate(10deg); }
+}
+
+@keyframes nod {
+	from { transform: rotate(-3deg); }
+	to { transform: rotate(4deg); }
+}
+
+@keyframes ground {
+	to { background-position: -26px 0; }
 }
 
 .dots {
@@ -292,6 +334,61 @@ h3 {
 .nav a:hover {
 	border-color: var(--ink);
 	background: var(--sun);
+}
+
+.stickers {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-left: var(--space-2);
+	padding: var(--space-1) var(--space-3);
+	border: var(--line-thin);
+	border-radius: var(--radius-pill);
+	background: var(--white);
+	box-shadow: 2px 2px 0 var(--ink);
+	color: var(--ink);
+	font: 700 0.95rem var(--font-body);
+	cursor: pointer;
+	transition: background 150ms, transform 200ms var(--ease-bounce);
+}
+
+.stickers > span:first-child {
+	color: var(--matcha-deep);
+}
+
+.stickers.has-stickers > span:first-child {
+	color: #E0457B;
+}
+
+.stickers__count {
+	min-width: 1.5rem;
+	padding: 0 0.35rem;
+	border-radius: var(--radius-pill);
+	background: var(--sun);
+	text-align: center;
+	font-family: var(--font-display);
+}
+
+.stickers:hover,
+.stickers[aria-pressed="true"] {
+	background: var(--matcha-soft);
+}
+
+.stickers.is-bumped {
+	animation: bump 450ms var(--ease-bounce);
+}
+
+@keyframes bump {
+	40% { transform: scale(1.25) rotate(-6deg); }
+}
+
+/* Showing only collected stickers. */
+.only-stickers #sightings > li:not(.is-collected) {
+	display: none;
+}
+
+.only-stickers .critters .section-title::before {
+	content: "My ";
 }
 
 /* Big banner: a matcha sky, scalloped clouds, then the search on pale matcha. */
@@ -473,7 +570,7 @@ h3 {
 .sightings > li:nth-child(4n+3) .card__photo { background: var(--grad-3); }
 .sightings > li:nth-child(4n+4) .card__photo { background: var(--grad-4); }
 
-.card__photo img,
+.card__zoom > img,
 .card__photo .pixels {
 	position: absolute;
 	inset: 0;
@@ -565,13 +662,89 @@ h3 {
 .card__badge {
 	position: absolute;
 	top: var(--space-2);
-	right: var(--space-2);
+	left: var(--space-2);
 	padding: 0 var(--space-2);
 	border: var(--line-thin);
 	border-radius: var(--radius-pill);
 	background: var(--sun);
 	font: 700 0.85rem/1.5 var(--font-display);
 	pointer-events: none;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+}
+
+.card__photo .tags {
+	position: absolute;
+	right: var(--space-2);
+	bottom: var(--space-2);
+	left: var(--space-2);
+	pointer-events: none;
+}
+
+.tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	max-width: 100%;
+	padding: 0.05rem 0.55rem;
+	border: var(--line-thin);
+	border-radius: var(--radius-pill);
+	background: var(--white);
+	font: 700 0.75rem/1.5 var(--font-body);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.flag {
+	flex: none;
+	width: 20px;
+	height: 15px;
+	border: 1px solid var(--ink);
+	border-radius: 3px;
+	object-fit: cover;
+}
+
+.kind--mammal { background: #FFE7A8; }
+.kind--bird { background: var(--sky-soft); }
+.kind--reptile { background: var(--matcha-soft); }
+.kind--shark { background: #DCD5FF; }
+.kind--fish { background: #CDEFF2; }
+.kind--amphibian { background: #FFD9C2; }
+
+.card__heart {
+	position: absolute;
+	top: var(--space-2);
+	right: var(--space-2);
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	border: var(--line-thin);
+	border-radius: 50%;
+	background: var(--white);
+	box-shadow: 2px 2px 0 var(--ink);
+	color: #C9C2D3;
+	font-size: 1.1rem;
+	line-height: 1;
+	cursor: pointer;
+	transition: transform 250ms var(--ease-bounce), color 150ms;
+}
+
+.card__heart:hover {
+	transform: scale(1.15);
+	color: #E0457B;
+}
+
+.card__heart[aria-pressed="true"] {
+	background: #FFD6E4;
+	color: #E0457B;
+	animation: bump 450ms var(--ease-bounce);
 }
 
 .card__body {
@@ -630,6 +803,205 @@ h3 {
 	stroke-width: 2.4;
 	stroke-linecap: round;
 	stroke-linejoin: round;
+}
+
+/* Critter of the day */
+
+.spotlight {
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+	margin-block: var(--space-8);
+	border: var(--line);
+	border-radius: var(--radius-lg);
+	background: var(--white);
+	box-shadow: 6px 6px 0 var(--matcha);
+	overflow: hidden;
+}
+
+.spotlight__photo {
+	position: relative;
+	min-height: 18rem;
+	border-right: var(--line);
+	background: var(--grad-1);
+}
+
+.spotlight__photo img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.spotlight__star {
+	position: absolute;
+	top: var(--space-3);
+	left: var(--space-3);
+	width: 3.5rem;
+	fill: var(--sun);
+	stroke: var(--ink);
+	stroke-width: 2;
+	animation: spin 10s linear infinite;
+}
+
+.spotlight__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: var(--space-3);
+	padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.spotlight__ribbon {
+	margin: 0;
+	padding: var(--space-1) var(--space-4);
+	border: var(--line-thin);
+	border-radius: var(--radius-pill);
+	background: var(--sun);
+	font: 700 0.95rem var(--font-display);
+	transform: rotate(-2deg);
+	animation: wiggle 2.4s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+	0%, 80%, 100% { transform: rotate(-2deg); }
+	85% { transform: rotate(3deg) scale(1.05); }
+	90% { transform: rotate(-4deg) scale(1.05); }
+	95% { transform: rotate(2deg); }
+}
+
+.spotlight__name {
+	margin: 0;
+	font-size: clamp(2rem, 4.5vw, 3.25rem);
+	font-weight: 700;
+	text-transform: capitalize;
+}
+
+.spotlight .tag {
+	font-size: 0.85rem;
+}
+
+.spotlight__story {
+	margin: 0;
+	max-width: 40ch;
+	font-size: 1.05rem;
+}
+
+.spotlight__open {
+	font-family: var(--font-body);
+	font-size: 1rem;
+	color: var(--ink);
+	cursor: pointer;
+}
+
+@media (max-width: 760px) {
+	.spotlight {
+		grid-template-columns: 1fr;
+	}
+
+	.spotlight__photo {
+		min-height: 0;
+		aspect-ratio: 4 / 3;
+		border-right: 0;
+		border-bottom: var(--line);
+	}
+}
+
+/* The fox and its tips */
+
+.critters__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+	margin: var(--space-8) 0 var(--space-4);
+}
+
+.critters__head .section-title {
+	margin: 0;
+}
+
+.mascot {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+}
+
+.mascot__fox {
+	animation: peek 3s ease-in-out infinite;
+}
+
+@keyframes peek {
+	0%, 100% { transform: rotate(0); }
+	10% { transform: rotate(-12deg) translateY(-4px); }
+	20% { transform: rotate(8deg); }
+	30% { transform: rotate(0); }
+}
+
+.mascot__bubble {
+	position: relative;
+	max-width: 22rem;
+	margin: 0;
+	padding: var(--space-2) var(--space-4);
+	border: var(--line-thin);
+	border-radius: var(--radius);
+	background: var(--white);
+	box-shadow: 3px 3px 0 var(--ink);
+	font-weight: 700;
+	font-size: 0.9rem;
+}
+
+.mascot__bubble::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: -9px;
+	width: 14px;
+	height: 14px;
+	border-bottom: var(--line-thin);
+	border-left: var(--line-thin);
+	background: var(--white);
+	transform: translateY(-50%) rotate(45deg);
+}
+
+.mascot__bubble.is-new {
+	animation: pop-in 400ms var(--ease-bounce);
+}
+
+/* Stars and hearts bursting out */
+
+.burst {
+	position: fixed;
+	z-index: 200;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
+.lightbox .burst {
+	position: absolute;
+}
+
+.burst__bit {
+	position: absolute;
+	left: -0.5em;
+	top: -0.5em;
+	font-size: 1.3rem;
+	line-height: 1;
+	-webkit-text-stroke: 1px var(--ink);
+	animation: fly 800ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.burst__bit--0 { color: #E0457B; }
+.burst__bit--1 { color: var(--sun); }
+.burst__bit--2 { color: var(--matcha); }
+
+@keyframes fly {
+	from { transform: translate(0, 0) scale(0.3) rotate(0); opacity: 1; }
+	70% { opacity: 1; }
+	to { transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--spin)); opacity: 0; }
 }
 
 /* Empty states and buttons */
@@ -738,6 +1110,16 @@ h3 {
 	.star {
 		top: 0.5rem;
 		margin-top: 0;
+	}
+}
+
+@media (max-width: 640px) {
+	.stickers__label {
+		display: none;
+	}
+
+	.mascot__bubble {
+		max-width: none;
 	}
 }
 
