@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"maps"
 	"net/http"
 	"net/url"
 	"os"
@@ -85,12 +86,8 @@ func seeds() []seed {
 		for _, k := range a.TaxonKeys() {
 			q.Add("taxonKey", strconv.Itoa(k))
 		}
-		for k, v := range kept {
-			q[k] = v
-		}
-		for k, v := range extra {
-			q[k] = v
-		}
+		maps.Copy(q, kept)
+		maps.Copy(q, extra)
 		out = append(out, seed{name: name, query: q, limit: limit})
 	}
 
@@ -127,9 +124,7 @@ func scrape(ctx context.Context, logger *slog.Logger, cfg scrapeConfig) error {
 		for offset := 0; offset < s.limit; offset += maxLimit {
 			limit := min(maxLimit, s.limit-offset)
 			q := url.Values{}
-			for k, v := range s.query {
-				q[k] = v
-			}
+			maps.Copy(q, s.query)
 			q.Set("limit", strconv.Itoa(limit))
 			q.Set("offset", strconv.Itoa(offset))
 

@@ -1,5 +1,7 @@
 package layout
 
+import "workshop/web/views/components"
+
 type BaseProps struct {
 	Title       string
 	Description string
@@ -23,6 +25,7 @@ templ Base(props BaseProps) {
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap"/>
 			<link rel="stylesheet" href="/assets/css/app.css"/>
 			<link rel="stylesheet" href="/assets/css/filter.css"/>
+			<link rel="stylesheet" href="/assets/css/lightbox.css"/>
 		</head>
 		<body>
 			<a class="skip" href="#sightings">Skip to the critters</a>
@@ -51,12 +54,15 @@ templ Base(props BaseProps) {
 					<p>
 						Wild animals spotted by real people around the world, from the
 						<a href="https://www.gbif.org" rel="noopener">Global Biodiversity Information Facility</a>.
-						Photos belong to the people credited on each card.
+						Click any photo to see it big, with the name of the person who took it.
 					</p>
 					<p class="site-footer__small">Made with Go, templ and a lot of hearts ♥</p>
 				</div>
 			</footer>
+			@components.Lightbox()
 			<script src="/assets/js/filter.js" defer></script>
+			<script src="/assets/js/pixel.js" defer></script>
+			<script src="/assets/js/lightbox.js" defer></script>
 		</body>
 	</html>
 }

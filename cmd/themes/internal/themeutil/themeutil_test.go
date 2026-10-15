@@ -58,8 +58,8 @@ func TestCoordinates(t *testing.T) {
 		input sighting.Location
 		want  string
 	}{
-		"North east":  {sighting.Location{Coordinates: sighting.Coordinates{Latitude: 51.5072, Longitude: 0.1276}}, "51.507N, 0.128E"},
-		"South west":  {sighting.Location{Coordinates: sighting.Coordinates{Latitude: -4.6583, Longitude: -39.2083}}, "4.658S, 39.208W"},
+		"North east":  {sighting.Location{Latitude: 51.5072, Longitude: 0.1276}, "51.507N, 0.128E"},
+		"South west":  {sighting.Location{Latitude: -4.6583, Longitude: -39.2083}, "4.658S, 39.208W"},
 		"Null island": {sighting.Location{}, "0.000N, 0.000E"},
 	}
 

@@ -6,10 +6,9 @@ templ SightingCard(s sighting.Sighting) {
 	<article class="card">
 		<div class="card__photo">
 			if m, ok := cover(s.Media); ok {
-				<img src={ thumb(m.URL) } alt={ altText(s, m) } loading="lazy" decoding="async"/>
-				if m.Creator != "" {
-					<span class="card__credit">© { m.Creator }</span>
-				}
+				<a class="card__zoom" href={ templ.URL(photo(m.URL, "large")) } data-lightbox data-caption={ caption(s, m) }>
+					<img src={ photo(m.URL, "small") } alt={ altText(s, m) } loading="lazy" decoding="async" data-pixel/>
+				</a>
 			} else {
 				<div class="card__nophoto" aria-hidden="true">
 					<img src="/assets/images/logo.svg" alt="" width="64" height="64" loading="lazy"/>
@@ -40,7 +39,7 @@ templ SightingCard(s sighting.Sighting) {
 				if s.RecordedBy != "" {
 					<li>
 						@icon("#i-heart")
-						<span>Spotted by { s.RecordedBy }</span>
+						<span><span class="visually-hidden">Spotted by: </span>{ s.RecordedBy }</span>
 					</li>
 				}
 			</ul>
@@ -53,7 +52,7 @@ templ icon(id string) {
 }
 
 templ CardIcons() {
-	<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+	<svg class="sprite" width="0" height="0" aria-hidden="true">
 		<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></symbol>
 		<symbol id="i-date" viewBox="0 0 24 24"><path d="M5 6h14v14H5zM5 10h14M9 3v4M15 3v4"></path></symbol>
 		<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"></path></symbol>

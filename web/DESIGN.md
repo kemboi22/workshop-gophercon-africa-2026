@@ -36,15 +36,22 @@ Text on pink is always `--ink`, never white (white fails contrast).
 
 - **Header**: sticky, cream with blur, bottom outline. Fox logo + "Kawaii Critters", nav as pills
   (Search, Critters, About) that turn blush on hover. The name hides under 440px.
-- **Hero**: outlined block with four pastel corner blobs (sky, peach, mint, blush), a white
-  "Hello" pill, big Fredoka title, three stat pills, then the search box and chips. Floating
-  hearts/sparkles bob gently.
+- **Hero**: outlined flat sky-blue block, no gradients, with two flat outlined circles (mint,
+  peach) peeking in from the right. A white "Hello" pill, big Fredoka title, three stat pills,
+  then the search box and chips. Floating hearts/sparkles bob gently.
 - **Search**: big white pill with a magnifier, hard shadow that turns pink on focus.
 - **Chips**: white pills, ticked = pink with a ♥ before the name. One sideways-scrolling row on phones.
-- **Sighting card**: white sticker, photo slot `4/3` with `object-fit: cover`, slot background
-  cycles sky/peach/mint/blush. Count badge (pink) top-right when more than one animal; photo
-  credit as a dark pill bottom-left. Body: name (capitalised), Latin name in italics, then place,
-  date and "Spotted by …" with pink line icons from a shared SVG sprite. Hover: lifts and tilts 1°.
+- **Grid**: 1 column, 2 from 480px, 3 from 760px, 4 from 1024px, 5 from 1280px. Page width up to
+  108rem with 1rem at the sides.
+- **Sighting card**: compact white sticker. Square photo slot (`aspect-ratio: 1`, image absolutely
+  filling it with `object-fit: cover`) whose background cycles sky/peach/mint/blush. The photo is
+  drawn as 40-across pixel art on a canvas over it (`pixel.js`); pointing at the card steps the
+  pixels away to the real photo and tilts the card 1°. Count badge (pink) top-right. Body: name
+  (capitalised, one line), Latin name without author, then place, date and observer with pink
+  line icons from a shared SVG sprite, each one line with an ellipsis. Cards pop in on load.
+- **Lightbox**: click a photo. A white outlined frame with a pink hard shadow pops in with a bounce;
+  the card's photo shows as big pixels that shimmer while the large photo loads, then sharpen in
+  five steps. Caption: name · place · date · © photographer. Pink round close button that spins.
 - **Empty states**: dashed outline box with the fox.
 - **Footer** (`#about`): peach, outlined top.
 
@@ -53,4 +60,5 @@ Text on pink is always `--ink`, never white (white fails contrast).
 - Respect `prefers-reduced-motion`: no bobbing, no tilts.
 - No emoji as icons; draw SVGs.
 - The home page shows the latest 2,000 sightings (`Limit` in `web/handlers/home.go`): all of
-  them is 17 MB of HTML. Cards use `content-visibility: auto` and iNaturalist's 500px photos.
+  them is 17 MB of HTML. Cards use `content-visibility: auto` and iNaturalist's small (240px) photos, large (1024px) in the lightbox.
+- No gradients: flat fills only.

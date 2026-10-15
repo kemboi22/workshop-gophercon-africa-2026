@@ -32,12 +32,21 @@ func cover(media []sighting.Media) (sighting.Media, bool) {
 	return media[i], true
 }
 
-// thumb asks iNaturalist for its 500px copy rather than the full-size original.
-func thumb(url string) string {
+// photo asks iNaturalist for the copy of a photo at size ("small", "large"); other hosts have one size.
+func photo(url, size string) string {
 	if strings.HasPrefix(url, "https://inaturalist-open-data.s3.amazonaws.com/") {
-		return strings.Replace(url, "/original.", "/medium.", 1)
+		return strings.Replace(url, "/original.", "/"+size+".", 1)
 	}
 	return url
+}
+
+// caption is the line under a photo in the lightbox.
+func caption(s sighting.Sighting, m sighting.Media) string {
+	parts := []string{displayName(s.Species), place(s.Location), s.HappenedAt.Format("2 Jan 2006")}
+	if m.Creator != "" {
+		parts = append(parts, "© "+m.Creator)
+	}
+	return strings.Join(parts, " · ")
 }
 
 // latinName is the scientific name without its author and year.

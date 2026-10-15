@@ -1,0 +1,16 @@
+package components
+
+templ Lightbox() {
+	<dialog id="lightbox" class="lightbox" aria-label="Photo">
+		<form method="dialog">
+			<button class="lightbox__close" aria-label="Close">×</button>
+		</form>
+		<figure class="lightbox__frame">
+			<div class="lightbox__stage">
+				<img class="lightbox__image" alt=""/>
+				<canvas class="lightbox__pixels" aria-hidden="true"></canvas>
+			</div>
+			<figcaption class="lightbox__caption" hidden></figcaption>
+		</figure>
+	</dialog>
+}

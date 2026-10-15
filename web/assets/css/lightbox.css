@@ -1,0 +1,124 @@
+/* Click a photo to see it big. Colours come from app.css. */
+
+.lightbox {
+	max-width: 94vw;
+	max-height: 94vh;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--ink);
+	overflow: visible;
+}
+
+.lightbox::backdrop {
+	background: color-mix(in srgb, var(--ink) 82%, transparent);
+	backdrop-filter: blur(4px);
+}
+
+.lightbox__frame {
+	margin: 0;
+	padding: var(--space-3);
+	border: var(--line);
+	border-radius: var(--radius-lg);
+	background: var(--white);
+	box-shadow: 8px 8px 0 var(--pink);
+}
+
+/* The stage takes the photo's shape (--ratio, set by lightbox.js) and fits the screen. */
+.lightbox__stage {
+	--ratio: 1.333;
+	position: relative;
+	width: min(88vw, 72rem, calc(74vh * var(--ratio)));
+	aspect-ratio: var(--ratio);
+	border: var(--line-thin);
+	border-radius: var(--radius);
+	background: var(--sky);
+	overflow: hidden;
+}
+
+.lightbox__image,
+.lightbox__pixels {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.lightbox__pixels {
+	image-rendering: pixelated;
+}
+
+.lightbox.is-loading .lightbox__image {
+	visibility: hidden;
+}
+
+/* While the big photo loads, the pixels shimmer. */
+.lightbox.is-loading .lightbox__pixels {
+	animation: shimmer 700ms steps(3, end) infinite alternate;
+}
+
+@keyframes shimmer {
+	to { filter: brightness(1.15) saturate(1.2); }
+}
+
+.lightbox__caption {
+	padding: var(--space-3) var(--space-2) var(--space-1);
+	font: 600 1rem/1.4 var(--font-display);
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.lightbox__close {
+	position: absolute;
+	top: -1rem;
+	right: -1rem;
+	z-index: 2;
+	width: 2.75rem;
+	height: 2.75rem;
+	border: var(--line);
+	border-radius: 50%;
+	background: var(--pink);
+	box-shadow: 3px 3px 0 var(--ink);
+	color: var(--ink);
+	font: 700 1.6rem/1 var(--font-display);
+	cursor: pointer;
+	transition: transform 250ms var(--ease-bounce);
+}
+
+.lightbox__close:hover {
+	transform: rotate(90deg) scale(1.1);
+}
+
+.lightbox__close:focus-visible {
+	outline: 3px solid var(--white);
+	outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+	.lightbox__close {
+		top: -0.75rem;
+		right: -0.25rem;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.lightbox[open] {
+		animation: lightbox-pop 420ms var(--ease-bounce);
+	}
+
+	.lightbox[open]::backdrop {
+		animation: lightbox-fade 250ms ease-out;
+	}
+}
+
+@keyframes lightbox-pop {
+	from {
+		opacity: 0;
+		transform: scale(0.6) rotate(-4deg);
+	}
+}
+
+@keyframes lightbox-fade {
+	from { opacity: 0; }
+}

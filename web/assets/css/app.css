@@ -85,8 +85,12 @@ h3 {
 }
 
 .container {
-	width: min(100% - 2rem, 76rem);
+	width: min(100% - 2rem, 108rem);
 	margin-inline: auto;
+}
+
+.sprite {
+	position: absolute;
 }
 
 .visually-hidden {
@@ -130,7 +134,7 @@ h3 {
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-4);
-	width: min(100% - 2rem, 76rem);
+	width: min(100% - 2rem, 108rem);
 	margin-inline: auto;
 	padding-block: var(--space-3);
 }
@@ -182,14 +186,36 @@ h3 {
 	padding: clamp(1.5rem, 5vw, 3.5rem);
 	border: var(--line);
 	border-radius: var(--radius-lg);
-	background:
-		radial-gradient(circle at 0% 0%, var(--sky) 0 35%, transparent 60%),
-		radial-gradient(circle at 100% 0%, var(--peach) 0 35%, transparent 60%),
-		radial-gradient(circle at 0% 100%, var(--mint) 0 35%, transparent 60%),
-		radial-gradient(circle at 100% 100%, var(--blush) 0 35%, transparent 60%),
-		var(--cream);
+	background: var(--sky);
 	box-shadow: 6px 6px 0 var(--ink);
 	overflow: hidden;
+	isolation: isolate;
+}
+
+/* Flat pastel blobs behind the banner, like the sticker sheet's backdrops. */
+.hero::before,
+.hero::after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	border: var(--line);
+	border-radius: 50%;
+}
+
+.hero::before {
+	right: -6rem;
+	bottom: -9rem;
+	width: 26rem;
+	height: 26rem;
+	background: var(--mint);
+}
+
+.hero::after {
+	top: -5rem;
+	right: 12rem;
+	width: 12rem;
+	height: 12rem;
+	background: var(--peach);
 }
 
 .hero__kicker {
@@ -268,17 +294,33 @@ h3 {
 
 .sightings {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
-	gap: var(--space-6);
+	grid-template-columns: 1fr;
+	gap: var(--space-4);
 	margin: 0 0 var(--space-12);
 	padding: 0;
 	list-style: none;
 }
 
+@media (min-width: 480px) { .sightings { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 760px) { .sightings { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); } }
+@media (min-width: 1024px) { .sightings { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1280px) { .sightings { grid-template-columns: repeat(5, 1fr); } }
+
 /* Thousands of cards: the browser skips drawing the ones off screen. */
 .sightings > li {
 	content-visibility: auto;
-	contain-intrinsic-size: auto 23rem;
+	contain-intrinsic-size: auto 22rem;
+	animation: pop-in 400ms var(--ease-bounce) both;
+}
+
+.sightings > li:nth-child(2) { animation-delay: 40ms; }
+.sightings > li:nth-child(3) { animation-delay: 80ms; }
+.sightings > li:nth-child(4) { animation-delay: 120ms; }
+.sightings > li:nth-child(5) { animation-delay: 160ms; }
+.sightings > li:nth-child(n+6) { animation-delay: 200ms; }
+
+@keyframes pop-in {
+	from { opacity: 0; transform: translateY(12px) scale(0.96); }
 }
 
 .card {
@@ -293,30 +335,67 @@ h3 {
 	transition: transform 250ms var(--ease-bounce), box-shadow 250ms;
 }
 
-.card:hover {
+.card:hover,
+.card:focus-within {
 	transform: translate(-3px, -3px) rotate(-1deg);
 	box-shadow: var(--shadow-lift);
 }
 
-.sightings > li:nth-child(even) .card:hover {
+.sightings > li:nth-child(even) .card:hover,
+.sightings > li:nth-child(even) .card:focus-within {
 	transform: translate(-3px, -3px) rotate(1deg);
 }
 
+/* Every photo slot is the same square, however the photo was taken. */
 .card__photo {
 	position: relative;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 1;
 	border-bottom: var(--line);
 	background: var(--sky);
+	overflow: hidden;
 }
 
 .sightings > li:nth-child(4n+2) .card__photo { background: var(--peach); }
 .sightings > li:nth-child(4n+3) .card__photo { background: var(--mint); }
 .sightings > li:nth-child(4n+4) .card__photo { background: var(--blush); }
 
-.card__photo > img {
+.card__zoom {
+	position: absolute;
+	inset: 0;
+	display: block;
+	cursor: zoom-in;
+}
+
+.card__zoom:focus-visible {
+	outline-offset: -6px;
+}
+
+.card__zoom img,
+.card__zoom .pixels {
+	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+.card__zoom img {
+	transition: transform 400ms var(--ease-bounce);
+}
+
+/* The pixel-art copy sits on top and steps away when you point at the card. */
+.card__zoom .pixels {
+	image-rendering: pixelated;
+	transition: opacity 360ms steps(4, end);
+}
+
+.card:hover .pixels,
+.card:focus-within .pixels {
+	opacity: 0;
+}
+
+.card:hover .card__zoom img {
+	transform: scale(1.06);
 }
 
 .card__nophoto {
@@ -326,69 +405,69 @@ h3 {
 	opacity: 0.55;
 }
 
-.card__credit {
-	position: absolute;
-	left: var(--space-2);
-	bottom: var(--space-2);
-	max-width: calc(100% - 1rem);
-	padding: 0.1rem var(--space-2);
-	border-radius: var(--radius-pill);
-	background: color-mix(in srgb, var(--ink) 75%, transparent);
-	color: var(--white);
-	font-size: 0.7rem;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .card__badge {
 	position: absolute;
 	top: var(--space-2);
 	right: var(--space-2);
-	padding: 0.1rem var(--space-3);
+	padding: 0 var(--space-2);
 	border: var(--line-thin);
 	border-radius: var(--radius-pill);
 	background: var(--pink);
-	font: 700 0.9rem/1.4 var(--font-display);
+	font: 700 0.85rem/1.5 var(--font-display);
+	pointer-events: none;
 }
 
 .card__body {
-	padding: var(--space-4) var(--space-4) var(--space-6);
+	display: grid;
+	gap: var(--space-2);
+	padding: var(--space-3) var(--space-4) var(--space-4);
 }
 
 .card__name {
 	margin: 0;
-	font-size: 1.3rem;
+	font-size: 1.15rem;
 	text-transform: capitalize;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .card__scientific {
-	margin: 0 0 var(--space-3);
+	margin: -0.4rem 0 0;
 	color: var(--muted);
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	font-style: italic;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .card__meta {
 	display: grid;
-	gap: var(--space-1);
+	gap: 0.15rem;
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	font-size: 0.9rem;
+	font-size: 0.82rem;
 }
 
 .card__meta li {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: var(--space-2);
+	min-width: 0;
+}
+
+.card__meta li > span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .card__icon {
 	flex: none;
-	width: 1.05rem;
-	height: 1.05rem;
-	margin-top: 0.2rem;
+	width: 0.95rem;
+	height: 0.95rem;
 	fill: none;
 	stroke: var(--pink);
 	stroke-width: 2.4;
@@ -479,7 +558,8 @@ h3 {
 	}
 
 	.hero__spark--2,
-	.hero__spark--3 {
+	.hero__spark--3,
+	.hero::after {
 		display: none;
 	}
 }
@@ -503,7 +583,10 @@ h3 {
 	}
 
 	.card:hover,
+	.card:focus-within,
 	.sightings > li:nth-child(even) .card:hover,
+	.sightings > li:nth-child(even) .card:focus-within,
+	.card:hover .card__zoom img,
 	.button:hover,
 	.logo:hover img {
 		transform: none;

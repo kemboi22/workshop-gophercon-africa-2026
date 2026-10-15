@@ -8,6 +8,8 @@ package layout
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "workshop/web/views/components"
+
 type BaseProps struct {
 	Title       string
 	Description string
@@ -41,7 +43,7 @@ func Base(props BaseProps) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 17, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 19, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -59,7 +61,7 @@ func Base(props BaseProps) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(props.Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 19, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 21, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 			if templ_7745c5c3_Err != nil {
@@ -70,7 +72,7 @@ func Base(props BaseProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap\"><link rel=\"stylesheet\" href=\"/assets/css/app.css\"><link rel=\"stylesheet\" href=\"/assets/css/filter.css\"></head><body><a class=\"skip\" href=\"#sightings\">Skip to the critters</a><header class=\"site-header\"><div class=\"site-header__inner\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"44\" height=\"44\"> <span class=\"logo__name\">Kawaii Critters</span></a><nav class=\"nav\" aria-label=\"Main\"><a href=\"/#search\">Search</a> <a href=\"/#sightings\">Critters</a> <a href=\"/#about\">About</a></nav></div></header><main class=\"container\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap\"><link rel=\"stylesheet\" href=\"/assets/css/app.css\"><link rel=\"stylesheet\" href=\"/assets/css/filter.css\"><link rel=\"stylesheet\" href=\"/assets/css/lightbox.css\"></head><body><a class=\"skip\" href=\"#sightings\">Skip to the critters</a><header class=\"site-header\"><div class=\"site-header__inner\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"44\" height=\"44\"> <span class=\"logo__name\">Kawaii Critters</span></a><nav class=\"nav\" aria-label=\"Main\"><a href=\"/#search\">Search</a> <a href=\"/#sightings\">Critters</a> <a href=\"/#about\">About</a></nav></div></header><main class=\"container\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -78,7 +80,15 @@ func Base(props BaseProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</main><footer class=\"site-footer\" id=\"about\"><div class=\"container\"><p class=\"site-footer__title\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"28\" height=\"28\"> Kawaii Critters</p><p>Wild animals spotted by real people around the world, from the <a href=\"https://www.gbif.org\" rel=\"noopener\">Global Biodiversity Information Facility</a>. Photos belong to the people credited on each card.</p><p class=\"site-footer__small\">Made with Go, templ and a lot of hearts ♥</p></div></footer><script src=\"/assets/js/filter.js\" defer></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</main><footer class=\"site-footer\" id=\"about\"><div class=\"container\"><p class=\"site-footer__title\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"28\" height=\"28\"> Kawaii Critters</p><p>Wild animals spotted by real people around the world, from the <a href=\"https://www.gbif.org\" rel=\"noopener\">Global Biodiversity Information Facility</a>. Click any photo to see it big, with the name of the person who took it.</p><p class=\"site-footer__small\">Made with Go, templ and a lot of hearts ♥</p></div></footer>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.Lightbox().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<script src=\"/assets/js/filter.js\" defer></script><script src=\"/assets/js/pixel.js\" defer></script><script src=\"/assets/js/lightbox.js\" defer></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
