@@ -29,7 +29,7 @@ templ Filter(props FilterProps) {
 		}
 		for _, g := range props.Groups {
 			<fieldset class="filter__group">
-				<legend>{ g.Label }</legend>
+				<legend class="visually-hidden">{ g.Label }</legend>
 				<div class="filter__chips">
 					for _, o := range g.Options {
 						<label class="chip">

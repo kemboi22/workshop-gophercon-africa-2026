@@ -12,7 +12,7 @@
 }
 
 .lightbox::backdrop {
-	background: color-mix(in srgb, var(--navy) 80%, transparent);
+	background: color-mix(in srgb, var(--forest) 82%, transparent);
 	backdrop-filter: blur(6px);
 }
 
@@ -25,7 +25,7 @@
 	border: var(--line);
 	border-radius: var(--radius-lg);
 	background: var(--white);
-	box-shadow: 10px 10px 0 var(--pink);
+	box-shadow: 10px 10px 0 var(--matcha);
 	overflow: auto;
 }
 

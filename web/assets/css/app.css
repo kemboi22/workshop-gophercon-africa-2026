@@ -1,22 +1,24 @@
 /* Kawaii Critters. The design is written up in web/DESIGN.md. */
 
 :root {
-	--milk: #FFF6FA;
+	--milk: #FAFCF7;
 	--white: #FFFFFF;
-	--pink: #FF37B4;
-	--pink-soft: #FF9AD5;
-	--blush: #FFE3F3;
+	--matcha: #5DBB7A;
+	--matcha-soft: #D4F0DC;
+	--matcha-pale: #EEF8F0;
+	--matcha-deep: #2F8A52;
+	--forest: #173A26;
 	--sun: #FAC30A;
 	--sky: #0091C8;
 	--sky-soft: #BFE8FA;
-	--navy: #001482;
 	--mint: #B3D8A8;
 	--fox: #F28C38;
 	--ink: #1A1036;
 	--muted: #5E5370;
 
-	--grad-sky: linear-gradient(180deg, #FF37B4 0%, #FF5EC3 65%, #FF7ACB 100%);
-	--grad-1: linear-gradient(150deg, #FFE3F3 0%, #FF9AD5 100%);
+	--grad-sky: linear-gradient(180deg, #5DBB7A 0%, #6CC487 100%);
+	--grad-loader: radial-gradient(circle at 50% 42%, #7CCB93 0%, #5DBB7A 45%, #4FAE6D 100%);
+	--grad-1: linear-gradient(150deg, #EEF8F0 0%, #A8DDB8 100%);
 	--grad-2: linear-gradient(150deg, #FFF1B8 0%, #FAC30A 100%);
 	--grad-3: linear-gradient(150deg, #BFE8FA 0%, #5BC2EC 100%);
 	--grad-4: linear-gradient(150deg, #E2F3DB 0%, #B3D8A8 100%);
@@ -27,7 +29,7 @@
 	--line: 3px solid var(--ink);
 	--line-thin: 2px solid var(--ink);
 	--shadow: 4px 4px 0 var(--ink);
-	--shadow-lift: 8px 8px 0 var(--pink);
+	--shadow-lift: 8px 8px 0 var(--matcha);
 	--radius: 22px;
 	--radius-lg: 32px;
 	--radius-pill: 999px;
@@ -141,7 +143,7 @@ h3 {
 	place-content: center;
 	justify-items: center;
 	gap: var(--space-3);
-	background: var(--grad-sky);
+	background: var(--grad-loader);
 	clip-path: circle(150% at 50% 50%);
 	transition: clip-path 700ms cubic-bezier(0.7, 0, 0.3, 1), visibility 0s 700ms;
 	/* If the script never runs, it lifts by itself. */
@@ -157,8 +159,26 @@ h3 {
 	to { visibility: hidden; }
 }
 
+/* Soft rings ripple out from behind the fox. */
+.loader__fox::before {
+	content: "";
+	position: absolute;
+	inset: -2.5rem;
+	z-index: -1;
+	border-radius: 50%;
+	background: var(--matcha-soft);
+	opacity: 0.35;
+	animation: ripple 1.6s ease-out infinite;
+}
+
+@keyframes ripple {
+	from { transform: scale(0.6); opacity: 0.5; }
+	to { transform: scale(1.6); opacity: 0; }
+}
+
 .loader__fox {
 	position: relative;
+	isolation: isolate;
 	animation: hop 700ms cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
 }
 
@@ -189,6 +209,7 @@ h3 {
 .loader__text {
 	margin: var(--space-8) 0 0;
 	font: 700 1.4rem var(--font-display);
+	letter-spacing: 0.01em;
 }
 
 .dots {
@@ -201,12 +222,12 @@ h3 {
 	height: 0.65rem;
 	border: var(--line-thin);
 	border-radius: 50%;
-	background: var(--sun);
+	background: var(--matcha-soft);
 	animation: dot 900ms ease-in-out infinite;
 }
 
-.dots span:nth-child(2) { animation-delay: 150ms; background: var(--white); }
-.dots span:nth-child(3) { animation-delay: 300ms; background: var(--sky-soft); }
+.dots span:nth-child(2) { animation-delay: 150ms; }
+.dots span:nth-child(3) { animation-delay: 300ms; }
 
 @keyframes dot {
 	0%, 60%, 100% { transform: translateY(0); }
@@ -273,20 +294,20 @@ h3 {
 	background: var(--sun);
 }
 
-/* Big banner: a hot-pink sky, scalloped clouds, then the search on soft pink. */
+/* Big banner: a matcha sky, scalloped clouds, then the search on pale matcha. */
 
 .hero {
-	margin-block: var(--space-6) var(--space-8);
+	margin-block: var(--space-6) var(--space-6);
 	border: var(--line);
 	border-radius: var(--radius-lg);
-	background: var(--pink-soft);
+	background: var(--matcha-pale);
 	box-shadow: 6px 6px 0 var(--ink);
 	overflow: hidden;
 }
 
 .hero__sky {
 	position: relative;
-	padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3.5rem) calc(clamp(1.5rem, 4vw, 2.5rem) + 40px);
+	padding: clamp(1.25rem, 3vw, 2rem) clamp(4rem, 8vw, 6rem) calc(1.25rem + 24px);
 	background: var(--grad-sky);
 	text-align: center;
 }
@@ -297,37 +318,19 @@ h3 {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	height: 40px;
-	background: radial-gradient(circle 40px at 50% 100%, var(--pink-soft) 0 37px, var(--ink) 37px 39.5px, transparent 40px) 0 0 / 80px 40px repeat-x;
+	height: 24px;
+	background: radial-gradient(circle 24px at 50% 100%, var(--matcha-pale) 0 21.5px, var(--ink) 21.5px 23.5px, transparent 24px) 0 0 / 48px 24px repeat-x;
 }
 
 .hero__ground {
-	padding: var(--space-4) clamp(1.25rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 2.5rem);
-}
-
-.hero__ground .filter {
-	justify-items: center;
-	text-align: center;
-}
-
-.hero__ground .filter__search {
-	width: 100%;
-}
-
-.hero__ground .filter__chips {
-	justify-content: center;
-}
-
-@media (max-width: 640px) {
-	.hero__ground .filter__chips {
-		justify-content: flex-start;
-	}
+	padding: var(--space-3) clamp(1rem, 4vw, 2.5rem) var(--space-4);
 }
 
 .star {
 	position: absolute;
-	top: clamp(0.75rem, 3vw, 1.75rem);
-	width: clamp(2.5rem, 6vw, 4.5rem);
+	top: 50%;
+	width: clamp(2.25rem, 4.5vw, 3.5rem);
+	margin-top: -1.75rem;
 	fill: var(--sun);
 	stroke: var(--ink);
 	stroke-width: 2;
@@ -344,7 +347,7 @@ h3 {
 
 .hero__kicker {
 	display: inline-block;
-	margin: 0 0 var(--space-3);
+	margin: 0 0 var(--space-2);
 	padding: var(--space-1) var(--space-4);
 	border: var(--line-thin);
 	border-radius: var(--radius-pill);
@@ -355,9 +358,9 @@ h3 {
 }
 
 .hero__title {
-	max-width: 20ch;
-	margin: 0 auto var(--space-6);
-	font-size: clamp(2rem, 5.5vw, 3.75rem);
+	max-width: 32ch;
+	margin: 0 auto var(--space-3);
+	font-size: clamp(1.6rem, 3.6vw, 2.6rem);
 	font-weight: 700;
 	letter-spacing: -0.02em;
 }
@@ -392,13 +395,13 @@ h3 {
 	display: flex;
 	align-items: center;
 	gap: var(--space-2);
-	margin: var(--space-12) 0 var(--space-6);
+	margin: var(--space-8) 0 var(--space-4);
 	font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
 .section-title::after {
 	content: "♥";
-	color: var(--pink);
+	color: var(--matcha-deep);
 }
 
 .sightings {
@@ -623,7 +626,7 @@ h3 {
 	width: 0.95rem;
 	height: 0.95rem;
 	fill: none;
-	stroke: var(--pink);
+	stroke: var(--matcha-deep);
 	stroke-width: 2.4;
 	stroke-linecap: round;
 	stroke-linejoin: round;
@@ -669,13 +672,13 @@ h3 {
 	box-shadow: 6px 6px 0 var(--ink);
 }
 
-/* Footer: deep navy under a row of clouds. */
+/* Footer: deep forest green under a row of clouds. */
 
 .site-footer {
 	position: relative;
 	margin-top: 40px;
 	padding-block: var(--space-12);
-	background: var(--navy);
+	background: var(--forest);
 	color: var(--white);
 }
 
@@ -686,7 +689,7 @@ h3 {
 	bottom: 100%;
 	left: 0;
 	height: 40px;
-	background: radial-gradient(circle 40px at 50% 100%, var(--navy) 0 40px, transparent 40.5px) 0 0 / 80px 40px repeat-x;
+	background: radial-gradient(circle 40px at 50% 100%, var(--forest) 0 40px, transparent 40.5px) 0 0 / 80px 40px repeat-x;
 }
 
 .site-footer p {
@@ -702,7 +705,7 @@ h3 {
 }
 
 .site-footer__small {
-	color: var(--pink-soft);
+	color: var(--matcha-soft);
 	font-size: 0.875rem;
 }
 
@@ -728,7 +731,13 @@ h3 {
 	}
 
 	.hero__sky {
-		padding-top: 3.5rem;
+		padding-inline: var(--space-4);
+		padding-top: 3.25rem;
+	}
+
+	.star {
+		top: 0.5rem;
+		margin-top: 0;
 	}
 }
 

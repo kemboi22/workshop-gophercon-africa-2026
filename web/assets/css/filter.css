@@ -5,10 +5,35 @@
 	display: none !important;
 }
 
+/* The search box and its status share a row; each group of chips is one row below. */
 .filter {
 	display: grid;
-	gap: var(--space-4);
+	grid-template-columns: minmax(0, 40rem) auto;
+	justify-content: center;
+	align-items: center;
+	gap: var(--space-3) var(--space-4);
 	margin: 0;
+}
+
+.filter__group {
+	grid-column: 1 / -1;
+}
+
+.filter .filter__status {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+@media (max-width: 640px) {
+	.filter {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.filter .filter__status {
+		grid-column: 1;
+		grid-row: auto;
+		justify-content: center;
+	}
 }
 
 .filter__search {
@@ -33,7 +58,7 @@
 
 .filter__search input {
 	width: 100%;
-	padding: 0.9rem 1.25rem 0.9rem 3.2rem;
+	padding: 0.7rem 1.25rem 0.7rem 3.2rem;
 	border: var(--line);
 	border-radius: var(--radius-pill);
 	background: var(--white);
@@ -51,7 +76,7 @@
 .filter__search input:focus {
 	outline: none;
 	transform: translate(-2px, -2px);
-	box-shadow: 6px 6px 0 var(--pink);
+	box-shadow: 6px 6px 0 var(--matcha);
 }
 
 .filter__group {
@@ -61,27 +86,19 @@
 	border: 0;
 }
 
-.filter__group legend {
-	margin-bottom: var(--space-2);
-	padding: 0;
-	font: 600 0.9rem var(--font-display);
-}
-
+/* One row that scrolls sideways rather than wrapping into a wall, fading out at the edges. */
 .filter__chips {
 	display: flex;
-	flex-wrap: wrap;
+	justify-content: safe center;
 	gap: var(--space-2);
+	overflow-x: auto;
+	padding: 0.25rem 0.5rem 0.4rem;
+	scrollbar-width: none;
+	mask-image: linear-gradient(90deg, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
 }
 
-/* Phones: one row that scrolls sideways rather than wrapping into a wall. */
-@media (max-width: 640px) {
-	.filter__chips {
-		flex-wrap: nowrap;
-		overflow-x: auto;
-		margin-inline: -0.25rem;
-		padding: 0.25rem 0.25rem 0.5rem;
-		scrollbar-width: none;
-	}
+.filter__chips::-webkit-scrollbar {
+	display: none;
 }
 
 .chip {
@@ -104,7 +121,7 @@
 }
 
 .chip:hover {
-	background: var(--blush);
+	background: var(--matcha-pale);
 	transform: translateY(-2px);
 }
 
@@ -137,7 +154,7 @@
 }
 
 .chip:has(input:focus-visible) {
-	outline: 3px solid var(--pink);
+	outline: 3px solid var(--sky);
 	outline-offset: 2px;
 }
 
