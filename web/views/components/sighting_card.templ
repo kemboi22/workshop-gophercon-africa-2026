@@ -3,17 +3,22 @@ package components
 import "workshop/internal/domain/sighting"
 
 templ SightingCard(s sighting.Sighting) {
-	<article class="card">
+	<article
+		class="card"
+		if s.ReferenceURL != "" {
+			data-ref={ s.ReferenceURL }
+		}
+	>
 		<div class="card__photo">
 			if m, ok := cover(s.Media); ok {
-				<a class="card__zoom" href={ templ.URL(photo(m.URL, "large")) } data-lightbox data-caption={ caption(s, m) }>
+				<a class="card__zoom" href={ templ.URL(photo(m.URL, "large")) } data-lightbox data-credit={ m.Creator }>
 					<img src={ photo(m.URL, "small") } alt={ altText(s, m) } loading="lazy" decoding="async" data-pixel/>
 				</a>
 			} else {
-				<div class="card__nophoto" aria-hidden="true">
+				<button class="card__zoom card__nophoto" type="button" data-lightbox>
 					<img src="/assets/images/logo.svg" alt="" width="64" height="64" loading="lazy"/>
-				</div>
-				<span class="visually-hidden">No photo</span>
+					<span class="visually-hidden">Open { displayName(s.Species) }, no photo</span>
+				</button>
 			}
 			if s.IndividualCount != nil && *s.IndividualCount > 1 {
 				<span class="card__badge">×{ *s.IndividualCount }</span>

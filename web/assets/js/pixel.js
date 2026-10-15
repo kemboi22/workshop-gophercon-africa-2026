@@ -4,7 +4,6 @@
 
 (function () {
 	const BLOCKS = 40; // Pixels across a card photo.
-	const still = matchMedia('(prefers-reduced-motion: reduce)');
 
 	// Draws img into canvas at `across` blocks wide, cropped to the canvas's shape like object-fit: cover.
 	function pixelate(img, canvas, across) {
@@ -17,9 +16,7 @@
 		const sw = w / scale, sh = h / scale;
 		canvas.width = w;
 		canvas.height = h;
-		const ctx = canvas.getContext('2d');
-		ctx.imageSmoothingEnabled = true;
-		ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, 0, 0, w, h);
+		canvas.getContext('2d').drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, 0, 0, w, h);
 	}
 	window.pixelate = pixelate;
 
@@ -30,7 +27,6 @@
 		canvas.setAttribute('aria-hidden', 'true');
 		img.after(canvas);
 		pixelate(img, canvas, BLOCKS);
-		img.closest('.card__photo').classList.add('is-pixel');
 	}
 
 	// Only cards scrolled near get painted: there are thousands.
@@ -47,6 +43,4 @@
 	document.querySelectorAll('img[data-pixel]').forEach(function (img) {
 		seen.observe(img);
 	});
-
-	window.pixelStill = still;
 })();

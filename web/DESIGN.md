@@ -1,64 +1,77 @@
 # Kawaii Critters: design
 
-Cute anime/kawaii, but clean and minimal: chunky dark outlines, soft pastel fills, little hearts,
-cards that look like stickers. Inspired by a sticker sheet of chibi animals on pastel quadrants.
+Cute anime/kawaii with the punch of an illustrated poster (inspired by yesnowww.com): a hot-pink
+sky, scalloped clouds, spinning yellow stars, chunky dark outlines, cards that look like stickers.
+Clean and minimal around that; gradients are soft two-stop washes, never rainbow or glow.
 
 ## Colours (`web/assets/css/app.css`, `:root`)
 
 | Token | Hex | Use |
 |-------|-----|-----|
-| `--cream` | `#FFF8EE` | Page background, `theme-color` |
-| `--sky` | `#BFE3F5` | Pastel fill: hero corner, stats, card photo slot |
-| `--peach` | `#FCE1C4` | Pastel fill, footer background |
-| `--mint` | `#D4EFC2` | Pastel fill |
-| `--blush` | `#FFE0EC` | Pastel fill, hover background |
-| `--pink` | `#FF6FA8` | Buttons, ticked chips, icons, focus rings, hearts |
-| `--fox` | `#F28C38` | The logo's fox, an occasional sparkle |
-| `--ink` | `#2B2140` | Text, every outline and hard shadow |
-| `--muted` | `#6B5F7A` | Secondary text (Latin names, counts) |
+| `--milk` | `#FFF6FA` | Page background |
+| `--pink` | `#FF37B4` | Hot pink: the banner sky, loader, hover shadows, icons, `theme-color` |
+| `--pink-soft` | `#FF9AD5` | The clouds and the search area under them |
+| `--blush` | `#FFE3F3` | Hover backgrounds |
+| `--sun` | `#FAC30A` | Stars, buttons, ticked chips, badges, the close button |
+| `--sky` | `#0091C8` | Focus rings |
+| `--sky-soft` | `#BFE8FA` | Small fills (count pill, nav button hover) |
+| `--navy` | `#001482` | Footer, lightbox backdrop |
+| `--mint` | `#B3D8A8` | Photo-tile wash |
+| `--fox` | `#F28C38` | The logo's fox |
+| `--ink` | `#1A1036` | Text, every outline and hard shadow |
+| `--muted` | `#5E5370` | Secondary text |
 
-Text on pink is always `--ink`, never white (white fails contrast).
+Gradients: `--grad-sky` (pink to lighter pink, the banner and loader) and `--grad-1`…`--grad-4`
+(blush→pink, cream→sun, ice→sky, pale→mint) as the photo tiles' backdrop while photos load.
+Text on pink or sun is always `--ink`.
 
 ## Lettering
 
 - Headings: **Fredoka** 500–700, round and bubbly, like a cartoon title.
-- Body: **Nunito** 400–700, rounded and friendly.
+- Body: **Nunito** 400–800, rounded and friendly.
 - Loaded from Google Fonts in the layout's `<head>`.
 
 ## Shape
 
 - Outlines: `3px solid var(--ink)` (`--line`), `2px` for chips and pills.
-- Hard offset shadows, no blur: `4px 4px 0` at rest, `7px 7px 0` on hover.
-- Radii: cards `22px`, hero `32px`, pills `999px`.
+- Hard offset shadows, no blur: `4px 4px 0` ink at rest, `8px 8px 0` pink on hover.
+- Radii: cards `22px`, hero and lightbox `32px`, pills `999px`.
+- Clouds: a CSS row of 80px semicircles (`radial-gradient … repeat-x`), outlined in ink.
 - Spacing scale: `--space-1` … `--space-12` (0.25rem to 3rem).
 
 ## Components
 
-- **Header**: sticky, cream with blur, bottom outline. Fox logo + "Kawaii Critters", nav as pills
-  (Search, Critters, About) that turn blush on hover. The name hides under 440px.
-- **Hero**: outlined flat sky-blue block, no gradients, with two flat outlined circles (mint,
-  peach) peeking in from the right. A white "Hello" pill, big Fredoka title, three stat pills,
-  then the search box and chips. Floating hearts/sparkles bob gently.
+- **Loader**: full-screen hot-pink, the fox hopping with a squash-and-stretch and a shadow,
+  "Finding critters" and three bouncing dots. Shrinks away as a circle once the page is in. Only
+  with JS (`html.js`), and it lifts itself after 6s regardless.
+- **Header**: sticky, milk with blur, bottom outline. Fox logo + "Kawaii Critters", nav as pills
+  (Search, Critters, About) that turn sun-yellow on hover. The name hides under 440px.
+- **Hero**: centred. Hot-pink sky with two spinning yellow stars in the top corners, a tilted
+  yellow "Hello" pill, big Fredoka title and white stat pills; a scalloped cloud edge; then the
+  search box and chips on soft pink.
 - **Search**: big white pill with a magnifier, hard shadow that turns pink on focus.
-- **Chips**: white pills, ticked = pink with a ♥ before the name. One sideways-scrolling row on phones.
-- **Grid**: 1 column, 2 from 480px, 3 from 760px, 4 from 1024px, 5 from 1280px. Page width up to
-  108rem with 1rem at the sides.
-- **Sighting card**: compact white sticker. Square photo slot (`aspect-ratio: 1`, image absolutely
-  filling it with `object-fit: cover`) whose background cycles sky/peach/mint/blush. The photo is
-  drawn as 40-across pixel art on a canvas over it (`pixel.js`); pointing at the card steps the
-  pixels away to the real photo and tilts the card 1°. Count badge (pink) top-right. Body: name
-  (capitalised, one line), Latin name without author, then place, date and observer with pink
-  line icons from a shared SVG sprite, each one line with an ellipsis. Cards pop in on load.
-- **Lightbox**: click a photo. A white outlined frame with a pink hard shadow pops in with a bounce;
-  the card's photo shows as big pixels that shimmer while the large photo loads, then sharpen in
-  five steps. Caption: name · place · date · © photographer. Pink round close button that spins.
+- **Chips**: white pills, ticked = sun-yellow with a ♥. One sideways-scrolling row on phones.
+- **Grid**: 1 column, 2 from 520px, 3 from 820px, 4 from 1100px. Page up to 96rem wide.
+- **Sighting card**: compact white sticker, whole card clickable. Square photo slot filled edge to
+  edge (image absolutely positioned, `object-fit: cover`), backdrop cycling the four tile
+  gradients with a white shimmer sweeping across until the photo loads. The photo is drawn as
+  40-across pixel art (`pixel.js`); pointing at the card steps the pixels away to the real photo,
+  zooms it slightly and tilts the card 1°. Count badge (sun) top-right. Body: name, Latin name
+  without author, place, date and observer, each one line with an ellipsis. Cards pop in on load.
+- **Lightbox**: any card. White outlined panel with a pink hard shadow, popping in with a bounce
+  over a blurred navy backdrop. Photo on the left (pixels shimmering, then sharpening in five
+  steps once the large photo arrives); on the right a "Critter n of m" pill, the name, Latin
+  name, the card's facts, a count pill, the photo credit, a "See the record" button and ← →
+  buttons (arrow keys too) that step through the cards still showing. Stacks on phones.
 - **Empty states**: dashed outline box with the fox.
-- **Footer** (`#about`): peach, outlined top.
+- **Footer** (`#about`): navy under a row of navy clouds, white text.
 
 ## Rules
 
-- Respect `prefers-reduced-motion`: no bobbing, no tilts.
+- Respect `prefers-reduced-motion`: no hops, spins, tilts, pop-ins or pixel steps.
 - No emoji as icons; draw SVGs.
+- Gradients stay soft two-stop washes.
 - The home page shows the latest 2,000 sightings (`Limit` in `web/handlers/home.go`): all of
-  them is 17 MB of HTML. Cards use `content-visibility: auto` and iNaturalist's small (240px) photos, large (1024px) in the lightbox.
-- No gradients: flat fills only.
+  them is 17 MB of HTML. Cards use `content-visibility: auto` and iNaturalist's small (240px)
+  photos, large (1024px) in the lightbox.
+- GBIF text reaches the lightbox only through `textContent` and cloned nodes, URLs only if http(s).

@@ -2,7 +2,7 @@
 	"name": "Kawaii Critters",
 	"short_name": "Critters",
 	"icons": [{ "src": "/assets/images/logo.svg", "sizes": "any", "type": "image/svg+xml" }],
-	"theme_color": "#FFF8EE",
-	"background_color": "#FFF8EE",
+	"theme_color": "#FF37B4",
+	"background_color": "#FFF6FA",
 	"display": "standalone"
 }

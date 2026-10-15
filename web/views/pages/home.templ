@@ -18,26 +18,31 @@ templ Home(props HomeProps) {
 		Description: "Cute wild animals spotted by real people around the world.",
 	}) {
 		<section class="hero" id="search" aria-labelledby="hero-title">
-			<span class="hero__spark hero__spark--1" aria-hidden="true">♥</span>
-			<span class="hero__spark hero__spark--2" aria-hidden="true">✦</span>
-			<span class="hero__spark hero__spark--3" aria-hidden="true">♥</span>
-			<p class="hero__kicker">Hello, critter spotter!</p>
-			<h1 id="hero-title" class="hero__title">Find the cutest wild animals<br/> seen around the world</h1>
+			<div class="hero__sky">
+				@components.Star("star--left")
+				@components.Star("star--right")
+				<p class="hero__kicker">Hello, critter spotter!</p>
+				<h1 id="hero-title" class="hero__title">Find the cutest wild animals seen around the world</h1>
+				if len(props.Sightings) > 0 {
+					<ul class="stats" aria-label="At a glance">
+						<li class="stats__item"><strong>{ thousands(props.Summary.Sightings) }</strong> sightings</li>
+						<li class="stats__item"><strong>{ strconv.Itoa(props.Summary.Species) }</strong> species</li>
+						<li class="stats__item"><strong>{ strconv.Itoa(props.Summary.Countries) }</strong> countries</li>
+					</ul>
+				}
+			</div>
 			if len(props.Sightings) > 0 {
-				<ul class="stats" aria-label="At a glance">
-					<li class="stats__item stats__item--sky"><strong>{ thousands(props.Summary.Sightings) }</strong> sightings</li>
-					<li class="stats__item stats__item--peach"><strong>{ strconv.Itoa(props.Summary.Species) }</strong> species</li>
-					<li class="stats__item stats__item--mint"><strong>{ strconv.Itoa(props.Summary.Countries) }</strong> countries</li>
-				</ul>
-				@components.Filter(components.FilterProps{
-					Target: "sightings",
-					Empty:  "no-matches",
-					Search: true,
-					Groups: []components.FilterGroup{
-						{Key: "animal", Label: "Animals", Options: components.FilterOptions(props.Sightings, 12, components.Animal)},
-						{Key: "country", Label: "Countries", Options: components.FilterOptions(props.Sightings, 12, components.Country)},
-					},
-				})
+				<div class="hero__ground">
+					@components.Filter(components.FilterProps{
+						Target: "sightings",
+						Empty:  "no-matches",
+						Search: true,
+						Groups: []components.FilterGroup{
+							{Key: "animal", Label: "Animals", Options: components.FilterOptions(props.Sightings, 12, components.Animal)},
+							{Key: "country", Label: "Countries", Options: components.FilterOptions(props.Sightings, 12, components.Country)},
+						},
+					})
+				</div>
 			}
 		</section>
 		<section class="critters" aria-labelledby="critters-title">
