@@ -1,7 +1,8 @@
 package layout
 
 type BaseProps struct {
-	Title string
+	Title       string
+	Description string
 }
 
 templ Base(props BaseProps) {
@@ -10,14 +11,52 @@ templ Base(props BaseProps) {
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml"/>
+			<link rel="manifest" href="/assets/manifest.json"/>
+			<meta name="theme-color" content="#FFF8EE"/>
 			<title>{ props.Title }</title>
+			if props.Description != "" {
+				<meta name="description" content={ props.Description }/>
+			}
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap"/>
 			<link rel="stylesheet" href="/assets/css/app.css"/>
+			<link rel="stylesheet" href="/assets/css/filter.css"/>
 		</head>
 		<body>
+			<a class="skip" href="#sightings">Skip to the critters</a>
+			<header class="site-header">
+				<div class="site-header__inner">
+					<a class="logo" href="/">
+						<img src="/assets/images/logo.svg" alt="" width="44" height="44"/>
+						<span class="logo__name">Kawaii Critters</span>
+					</a>
+					<nav class="nav" aria-label="Main">
+						<a href="/#search">Search</a>
+						<a href="/#sightings">Critters</a>
+						<a href="/#about">About</a>
+					</nav>
+				</div>
+			</header>
 			<main class="container">
 				{ children... }
 			</main>
-			<script src="/assets/js/app.js"></script>
+			<footer class="site-footer" id="about">
+				<div class="container">
+					<p class="site-footer__title">
+						<img src="/assets/images/logo.svg" alt="" width="28" height="28"/>
+						Kawaii Critters
+					</p>
+					<p>
+						Wild animals spotted by real people around the world, from the
+						<a href="https://www.gbif.org" rel="noopener">Global Biodiversity Information Facility</a>.
+						Photos belong to the people credited on each card.
+					</p>
+					<p class="site-footer__small">Made with Go, templ and a lot of hearts ♥</p>
+				</div>
+			</footer>
+			<script src="/assets/js/filter.js" defer></script>
 		</body>
 	</html>
 }

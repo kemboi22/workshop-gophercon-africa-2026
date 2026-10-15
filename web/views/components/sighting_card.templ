@@ -1,65 +1,61 @@
 package components
 
-import (
-	"cmp"
-	"fmt"
-	"slices"
-	"strings"
-
-	"workshop/internal/domain/sighting"
-	"workshop/internal/domain/species"
-)
+import "workshop/internal/domain/sighting"
 
 templ SightingCard(s sighting.Sighting) {
 	<article class="card">
-		<!-- Header -->
-		<header class="card__header">
-			<h2>{ displayName(s.Species) }</h2>
-			if s.Species.ScientificName != "" {
-				<p class="card__scientific">{ s.Species.ScientificName }</p>
+		<div class="card__photo">
+			if m, ok := cover(s.Media); ok {
+				<img src={ thumb(m.URL) } alt={ altText(s, m) } loading="lazy" decoding="async"/>
+				if m.Creator != "" {
+					<span class="card__credit">© { m.Creator }</span>
+				}
+			} else {
+				<div class="card__nophoto" aria-hidden="true">
+					<img src="/assets/images/logo.svg" alt="" width="64" height="64" loading="lazy"/>
+				</div>
+				<span class="visually-hidden">No photo</span>
 			}
-		</header>
-		<!-- Meta -->
-		<dl class="card__meta">
-			<dt>Seen</dt>
-			<dd>{ s.HappenedAt.Format("2 January 2006") }</dd>
-			<dt>Where</dt>
-			<dd>{ place(s.Location) }</dd>
-			if s.IndividualCount != nil {
-				<dt>Count</dt>
-				<dd>{ individuals(*s.IndividualCount) }</dd>
+			if s.IndividualCount != nil && *s.IndividualCount > 1 {
+				<span class="card__badge">×{ *s.IndividualCount }</span>
 			}
-			if s.RecordedBy != "" {
-				<dt>Recorded by</dt>
-				<dd>{ s.RecordedBy }</dd>
+		</div>
+		<div class="card__body">
+			<h3 class="card__name">{ displayName(s.Species) }</h3>
+			if latinName(s.Species) != "" {
+				<p class="card__scientific">{ latinName(s.Species) }</p>
 			}
-		</dl>
-		<!-- Gallery -->
-		<div class="card__gallery">
-			@Gallery(s.Media)
+			<ul class="card__meta">
+				<li>
+					@icon("#i-pin")
+					<span><span class="visually-hidden">Where: </span>{ place(s.Location) }</span>
+				</li>
+				<li>
+					@icon("#i-date")
+					<span>
+						<span class="visually-hidden">Seen: </span>
+						<time datetime={ s.HappenedAt.Format("2006-01-02") }>{ s.HappenedAt.Format("2 Jan 2006") }</time>
+					</span>
+				</li>
+				if s.RecordedBy != "" {
+					<li>
+						@icon("#i-heart")
+						<span>Spotted by { s.RecordedBy }</span>
+					</li>
+				}
+			</ul>
 		</div>
 	</article>
 }
 
-// displayName prefers the name a reader would recognise, falling back
-// through the taxonomy as GBIF records thin out.
-func displayName(sp species.Species) string {
-	return cmp.Or(sp.VernacularName, sp.CanonicalName, sp.ScientificName, "Unknown species")
+templ icon(id string) {
+	<svg class="card__icon" aria-hidden="true"><use href={ id }></use></svg>
 }
 
-// place joins whichever parts of the location GBIF supplied.
-func place(l sighting.Location) string {
-	parts := slices.DeleteFunc(
-		[]string{l.Locality, l.StateProvince, l.Country},
-		func(s string) bool { return s == "" },
-	)
-	return cmp.Or(strings.Join(parts, ", "), "Location unknown")
-}
-
-// individuals renders how many animals were seen in a single sighting.
-func individuals(n int) string {
-	if n == 1 {
-		return "1 individual"
-	}
-	return fmt.Sprintf("%d individuals", n)
+templ CardIcons() {
+	<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+		<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></symbol>
+		<symbol id="i-date" viewBox="0 0 24 24"><path d="M5 6h14v14H5zM5 10h14M9 3v4M15 3v4"></path></symbol>
+		<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"></path></symbol>
+	</svg>
 }

@@ -1,0 +1,168 @@
+/* The search box and the animal and country buttons. Colours come from app.css. */
+
+/* The hidden attribute loses to any display rule on the item, so put it back on top. */
+[hidden] {
+	display: none !important;
+}
+
+.filter {
+	display: grid;
+	gap: var(--space-4);
+	margin: 0;
+}
+
+.filter__search {
+	position: relative;
+	display: block;
+	max-width: 40rem;
+}
+
+.filter__glass {
+	position: absolute;
+	top: 50%;
+	left: 1.1rem;
+	width: 1.4rem;
+	height: 1.4rem;
+	transform: translateY(-50%);
+	fill: none;
+	stroke: var(--ink);
+	stroke-width: 2.6;
+	stroke-linecap: round;
+	pointer-events: none;
+}
+
+.filter__search input {
+	width: 100%;
+	padding: 0.9rem 1.25rem 0.9rem 3.2rem;
+	border: var(--line);
+	border-radius: var(--radius-pill);
+	background: var(--white);
+	box-shadow: var(--shadow);
+	color: var(--ink);
+	font: 600 1.05rem var(--font-body);
+	transition: box-shadow 200ms, transform 200ms var(--ease-bounce);
+}
+
+.filter__search input::placeholder {
+	color: var(--muted);
+	font-weight: 400;
+}
+
+.filter__search input:focus {
+	outline: none;
+	transform: translate(-2px, -2px);
+	box-shadow: 6px 6px 0 var(--pink);
+}
+
+.filter__group {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.filter__group legend {
+	margin-bottom: var(--space-2);
+	padding: 0;
+	font: 600 0.9rem var(--font-display);
+}
+
+.filter__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+/* Phones: one row that scrolls sideways rather than wrapping into a wall. */
+@media (max-width: 640px) {
+	.filter__chips {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		margin-inline: -0.25rem;
+		padding: 0.25rem 0.25rem 0.5rem;
+		scrollbar-width: none;
+	}
+}
+
+.chip {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0.3rem 0.85rem;
+	border: var(--line-thin);
+	border-radius: var(--radius-pill);
+	background: var(--chip-bg);
+	color: var(--chip-fg);
+	font-size: 0.875rem;
+	font-weight: 700;
+	text-transform: capitalize;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	transition: background 150ms, transform 200ms var(--ease-bounce);
+}
+
+.chip:hover {
+	background: var(--blush);
+	transform: translateY(-2px);
+}
+
+/* The checkbox is there for the keyboard and the screen reader; the chip is what shows. */
+.chip input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.chip small {
+	color: var(--muted);
+	font-weight: 600;
+}
+
+.chip:has(input:checked) {
+	background: var(--chip-active-bg);
+	color: var(--chip-active-fg);
+	box-shadow: 2px 2px 0 var(--ink);
+}
+
+.chip:has(input:checked) small {
+	color: var(--ink);
+}
+
+.chip:has(input:checked)::before {
+	content: "♥";
+}
+
+.chip:has(input:focus-visible) {
+	outline: 3px solid var(--pink);
+	outline-offset: 2px;
+}
+
+.filter__status {
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
+	margin: 0;
+	font-weight: 700;
+}
+
+.filter__count:empty {
+	display: none;
+}
+
+.filter__status button {
+	padding: 0.3rem 1rem;
+	border: var(--line-thin);
+	border-radius: var(--radius-pill);
+	background: var(--white);
+	color: var(--ink);
+	font: 700 0.875rem var(--font-body);
+	cursor: pointer;
+}
+
+.filter__status button:hover {
+	background: var(--mint);
+}
